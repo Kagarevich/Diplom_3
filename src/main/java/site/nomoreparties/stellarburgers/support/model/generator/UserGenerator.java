@@ -12,6 +12,14 @@ public class UserGenerator {
         );
     }
 
+    public static User createCustomPasswordLength(int passwordLength) {
+        return new User(
+                createEmail(),
+                createString(passwordLength),
+                createString()
+        );
+    }
+
     public static String createEmail() {
         return String.format(
                 "%s@%s.%s",
@@ -22,5 +30,9 @@ public class UserGenerator {
 
     public static String createString() {
         return RandomStringUtils.random(10, true, false).toLowerCase();
+    }
+
+    public static String createString(int length) {
+        return RandomStringUtils.random(length, true, false).toLowerCase();
     }
 }
