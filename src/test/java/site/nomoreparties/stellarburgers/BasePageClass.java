@@ -7,7 +7,7 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.firefox.FirefoxDriver;
 
-public class BaseClass {
+public class BasePageClass {
 
     //решил не дописывать options для драйвера, чтобы всё было наглядно
     protected WebDriver driver;
