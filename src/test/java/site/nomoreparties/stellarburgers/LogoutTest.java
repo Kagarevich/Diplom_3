@@ -19,7 +19,6 @@ import site.nomoreparties.stellarburgers.support.model.generator.UserGenerator;
 @DisplayName("Тесты \"Выход из аккаунта\"")
 public class LogoutTest {
 
-    private HomePage homePage;
     private User user;
     private WebDriver driver;
     private String accessToken;
@@ -51,7 +50,7 @@ public class LogoutTest {
             "Причина, по которой так сделал описал в README.md")
     public void logoutTest() {
         DriverSupportManager.open(driver, HomePage.getUrl());
-        homePage = new HomePage(driver);
+        HomePage homePage = new HomePage(driver);
         homePage.setLocalStorage("accessToken", accessToken);
         homePage.setLocalStorage("refreshToken", refreshToken);
         homePage.refresh();

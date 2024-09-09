@@ -16,8 +16,8 @@ public class UserClient {
 
 
     @Step("Регистрация пользователя")
-    public static Response register(User user) {
-        return given()
+    public static void register(User user) {
+        given()
                 .contentType("application/json")
                 .baseUri(BASE_URI)
                 .body(user)
