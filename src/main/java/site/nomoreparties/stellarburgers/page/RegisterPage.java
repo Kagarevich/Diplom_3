@@ -9,25 +9,28 @@ import site.nomoreparties.stellarburgers.support.model.User;
 
 import java.time.Duration;
 
-public class RegisterPage extends BasePageClass {
+public class RegisterPage extends BaseUserPageClass {
 
     private static final String URL = "https://stellarburgers.nomoreparties.site/register";
     private static final String ERROR_MESSAGE = "Некорректный пароль";
 
     private final By loginLink = By.className("Auth_link__1fOlj");
-    private final By registerBtn = By.className("button_button__33qZ0 button_button_type_primary__1O7Bx " +
-            "button_button_size_medium__3zxIa");
+    private final By registerBtn = By.xpath(".//button[text()='Зарегистрироваться']");
     private final By nameInput = By.xpath(".//label[text()='Имя']/parent::div/input");
-    private final By loadingDiv = By.className("Modal_modal_opened__3ISw4 Modal_modal__P3_V5");
+    private final By loadingDiv = By.xpath(".//div[@class='Modal_modal__P3_V5']");
     private final By errorMessage = By.xpath(".//p[text()='Некорректный пароль']");
 
     public RegisterPage(WebDriver driver) {
         super(driver);
     }
 
+    public static String getUrl() {
+        return URL;
+    }
+
     @Step("Ввести имя пользователя")
     public void nameInputSendKeys(String name) {
-        driver.findElement(nameInput).sendKeys(name);
+        this.driver.findElement(nameInput).sendKeys(name);
     }
 
     @Step("Заполнить поля формы регистрации")
@@ -39,32 +42,36 @@ public class RegisterPage extends BasePageClass {
     }
 
     @Step("Нажать кнопку \"Зарегистрироваться\"")
+    public RegisterPage errorRegisterBtnClick() {
+        this.driver.findElement(registerBtn).click();
+        return this;
+    }
+
+    @Step("Нажать кнопку \"Зарегистрироваться\" с ошибкой")
     public LoginPage registerBtnClick() {
-        driver.findElement(registerBtn).click();
+        this.driver.findElement(registerBtn).click();
         return new LoginPage(driver);
     }
 
     @Step("Кликнуть на ссылку перехода на страницу логина")
     public LoginPage loginLinkClick() {
-        driver.findElement(loginLink).click();
-        return new LoginPage(driver);
+        this.driver.findElement(loginLink).click();
+        return new LoginPage(this.driver);
     }
 
     @Step("Ожидание прорисовки страницы до нужного элемента - ссылки на страницу логина")
     public RegisterPage waitForLoad() {
-        new WebDriverWait(driver, Duration.ofSeconds(10)).until(driver ->
-                driver.findElement(loginLink).getText() != null
-                        && !driver.findElement(loginLink).getText().isEmpty()
-                        && driver.findElements(loadingDiv).isEmpty());
+        new WebDriverWait(this.driver, Duration.ofSeconds(60))
+                .until(driver ->
+                        !driver.findElement(loadingDiv).isDisplayed());
         return this;
     }
 
     @Step("Проверка ввода некорректного пароля")
-    public void checkPasswordInputSendWrongKeysRegister(String password) {
-        passwordInputSendKeys(password);
+    public void checkPasswordInputSendWrongKeysRegister() {
         Assert.assertEquals(
-                "Некорректное поведения при ошибке",
-                driver.findElement(errorMessage).getText(),
+                "Некорректное поведения при некорректном пароле",
+                this.driver.findElement(errorMessage).getText(),
                 ERROR_MESSAGE);
     }
 }

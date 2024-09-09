@@ -1,9 +1,12 @@
 package site.nomoreparties.stellarburgers.support.model.generator;
 
+import io.qameta.allure.Step;
 import org.apache.commons.lang3.RandomStringUtils;
 import site.nomoreparties.stellarburgers.support.model.User;
 
 public class UserGenerator {
+
+    @Step("Генерация данных корректного случайного пользователя")
     public static User create() {
         return new User(
                 createEmail(),
@@ -12,6 +15,7 @@ public class UserGenerator {
         );
     }
 
+    @Step("Генерация данных случайного пользователя с паролем выбранной длины")
     public static User createCustomPasswordLength(int passwordLength) {
         return new User(
                 createEmail(),

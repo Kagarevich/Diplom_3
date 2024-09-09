@@ -2,6 +2,7 @@ package site.nomoreparties.stellarburgers.support.api.client;
 
 import io.qameta.allure.Step;
 import io.restassured.response.Response;
+import site.nomoreparties.stellarburgers.support.model.AuthUser;
 import site.nomoreparties.stellarburgers.support.model.User;
 
 import static io.restassured.RestAssured.given;
@@ -15,7 +16,7 @@ public class UserClient {
 
 
     @Step("Регистрация пользователя")
-    public Response register(User user) {
+    public static Response register(User user) {
         return given()
                 .contentType("application/json")
                 .baseUri(BASE_URI)
@@ -29,7 +30,8 @@ public class UserClient {
     }
 
     @Step("Удаление пользователя")
-    public void delete(String accessToken) {
+    public static void delete(User user) {
+        String accessToken = login(user).as(AuthUser.class).getAccessToken();
         given()
                 .headers("Authorization", accessToken)
                 .baseUri(BASE_URI)
@@ -39,7 +41,7 @@ public class UserClient {
     }
 
     @Step("Логин пользователя")
-    public Response login(User user) {
+    public static Response login(User user) {
         return given()
                 .contentType("application/json")
                 .baseUri(BASE_URI)

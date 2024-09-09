@@ -4,18 +4,14 @@ import io.qameta.allure.Step;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 
-public class BaseUserPageClass {
-
-    protected final WebDriver driver;
+public class BaseUserPageClass extends BasePageClass {
 
     private final By emailInput = By.xpath(".//label[text()='Email']/parent::div/input");
     private final By passwordInput = By.xpath(".//input[@type='password']");
 
     public BaseUserPageClass(WebDriver driver) {
-        this.driver = driver;
+        super(driver);
     }
-
-    ;
 
     @Step("Вводим email пользователя")
     public void emailInputSendKeys(String email) {
